@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["git",""],["path",""],["registry","A `Source` for registry-based packages."]],"struct":[["GitSource",""]]});
