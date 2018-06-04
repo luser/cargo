@@ -339,7 +339,15 @@ impl<'a> JobQueue<'a> {
 
         let my_tx = self.tx.clone();
         let doit = move || {
+            let mut p = profile::start(format!("building: {}/{}", key.pkg, key.target.name()));
+            p.args(json!({
+                "package_name": key.pkg.name(),
+                "package_version": key.pkg.version(),
+                "target_kind": key.target.kind(),
+                "kind": key.kind
+            }));
             let res = job.run(fresh, &JobState { tx: my_tx.clone() });
+            drop(p);
             my_tx.send(Message::Finish(key, res)).unwrap();
         };
         match fresh {
